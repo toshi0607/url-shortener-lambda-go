@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: URL Shortner using API Gateway, DynamoDB and Lambda
+Resources:
+  Lambda1:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: artifact
+      Handler: lambda1
+      Runtime: go1.x
+      Timeout: 10
+      Tracing: Active
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /links
+            Method: post
+
+  Lambda2:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: artifact
+      Handler: lambda2
+      Runtime: go1.x
+      Timeout: 10
+      Tracing: Active
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /links
+            Method: get
+
+  Table:
+    Type: AWS::Serverless::SimpleTable
+    PrimaryKey:
+      Name: id
+      Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
