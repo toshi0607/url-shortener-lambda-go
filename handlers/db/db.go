@@ -1,17 +1,18 @@
 package db
 
 import (
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/pkg/errors"
 )
 
-const (
-	Region        = endpoints.ApNortheast1RegionID
-	LinkTableName = "link"
+var (
+	LinkTableName = os.Getenv("LINK_TABLE")
+	Region        = os.Getenv("REGION")
 )
 
 type Database interface {
