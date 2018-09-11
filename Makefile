@@ -15,3 +15,8 @@ deploy: build
 		--template-file sam.yml \
 		--stack-name url-shortener-lambda-go \
 		--capabilities CAPABILITY_IAM
+	echo API endpoint URL for Prod environment:
+	aws cloudformation describe-stacks \
+		--stack-name url-shortener-lambda-go \
+		--query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue' \
+		--output text
