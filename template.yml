@@ -1,6 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 Description: URL Shortener using API Gateway, DynamoDB and Lambda
+Parameters:
+  LinkTableName:
+    Type: String
 Resources:
   Shorten:
     Type: AWS::Serverless::Function
@@ -8,6 +11,7 @@ Resources:
       CodeUri: artifact
       Handler: shorten
       Runtime: go1.x
+      Policies: AmazonDynamoDBFullAccess
       Timeout: 10
       Tracing: Active
       Events:
@@ -16,6 +20,9 @@ Resources:
           Properties:
             Path: /links
             Method: post
+      Environment:
+        Variables:
+          LINK_TABLE: !Ref LinkTableName
 
   Redirect:
     Type: AWS::Serverless::Function
@@ -23,7 +30,7 @@ Resources:
       CodeUri: artifact
       Handler: redirect
       Runtime: go1.x
-      Policies: AmazonDynamoDBFullAccess
+      Policies: AmazonDynamoDBReadOnlyAccess
       Timeout: 10
       Tracing: Active
       Events:
@@ -32,6 +39,9 @@ Resources:
           Properties:
             Path: /links/{shorten_resource}
             Method: get
+      Environment:
+        Variables:
+          LINK_TABLE: !Ref LinkTableName
 
   LinkTable:
     Type: AWS::DynamoDB::Table

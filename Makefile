@@ -14,7 +14,9 @@ deploy: build
 	sam deploy \
 		--template-file sam.yml \
 		--stack-name url-shortener-lambda-go \
-		--capabilities CAPABILITY_IAM
+		--capabilities CAPABILITY_IAM \
+		--parameter-overrides \
+			LinkTableName=$(LINK_TABLE)
 	echo API endpoint URL for Prod environment:
 	aws cloudformation describe-stacks \
 		--stack-name url-shortener-lambda-go \
