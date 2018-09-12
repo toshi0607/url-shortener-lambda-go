@@ -14,6 +14,12 @@ type Link struct {
 	LongURL  string `json:"original_url"`
 }
 
+var DynamoDB db.DB
+
+func init() {
+	DynamoDB = db.New()
+}
+
 func main() {
 	lambda.Start(handler)
 }
@@ -27,8 +33,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		), nil
 	}
 
-	db := db.New()
-	URL, err := db.GetLinkByShortenResource(r)
+	URL, err := DynamoDB.GetItem(r)
 	if err != nil {
 		return response(
 			http.StatusInternalServerError,

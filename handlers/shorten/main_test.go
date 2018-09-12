@@ -4,10 +4,18 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/toshi0607/url-shortner-lambda-go/handlers/db"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
+
 	"github.com/aws/aws-lambda-go/events"
 )
 
 func TestHandler(t *testing.T) {
+	prepare()
+
 	tests := []struct {
 		url, method string
 		status      int
@@ -27,4 +35,13 @@ func TestHandler(t *testing.T) {
 			t.Errorf("ExitStatus=%d, want %d", res.StatusCode, te.status)
 		}
 	}
+}
+
+func prepare() {
+	sess := session.Must(session.NewSession(&aws.Config{
+		Region:   aws.String(db.Region),
+		Endpoint: aws.String("http://localhost:8000")}),
+	)
+
+	DynamoDB = db.DB{Instance: dynamodb.New(sess)}
 }

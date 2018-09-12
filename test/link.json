@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "shorten_resource",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "link",
+  "KeySchema": [
+    {
+      "AttributeName": "shorten_resource",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

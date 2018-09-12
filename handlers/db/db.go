@@ -16,12 +16,12 @@ var (
 )
 
 type Database interface {
-	GetItem(interface{})
-	PutItem(interface{})
+	GetItem(interface{}) (string, error)
+	PutItem(interface{}) (interface{}, error)
 }
 
 type DB struct {
-	instance *dynamodb.DynamoDB
+	Instance *dynamodb.DynamoDB
 }
 
 type Link struct {
@@ -34,10 +34,10 @@ func New() DB {
 		Region: aws.String(Region)}),
 	)
 
-	return DB{instance: dynamodb.New(sess)}
+	return DB{Instance: dynamodb.New(sess)}
 }
-func (d DB) GetLinkByShortenResource(i interface{}) (string, error) {
-	item, err := d.instance.GetItem(&dynamodb.GetItemInput{
+func (d DB) GetItem(i interface{}) (string, error) {
+	item, err := d.Instance.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(LinkTableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"shorten_resource": {
@@ -70,7 +70,7 @@ func (d DB) PutItem(i interface{}) (interface{}, error) {
 		Item:      av,
 		TableName: aws.String(LinkTableName),
 	}
-	item, err := d.instance.PutItem(input)
+	item, err := d.Instance.PutItem(input)
 	if err != nil {
 		return nil, err
 	}

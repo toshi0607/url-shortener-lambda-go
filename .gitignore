@@ -23,3 +23,7 @@ sam.yml
 
 # dependency
 vendor/
+
+# local DB
+test/dynamodb_local_latest/
+shared-local-instance.db

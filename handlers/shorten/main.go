@@ -26,6 +26,12 @@ type Link struct {
 	OriginalURL     string `json:"original_url"`
 }
 
+var DynamoDB db.DB
+
+func init() {
+	DynamoDB = db.New()
+}
+
 func main() {
 	lambda.Start(handler)
 }
@@ -48,8 +54,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		OriginalURL:     p.URL,
 	}
 
-	db := db.New()
-	_, err = db.PutItem(link)
+	_, err = DynamoDB.PutItem(link)
 	if err != nil {
 		return response(
 			http.StatusInternalServerError,
