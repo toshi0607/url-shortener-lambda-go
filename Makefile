@@ -22,3 +22,16 @@ deploy: build
 		--stack-name url-shortener-lambda-go \
 		--query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue' \
 		--output text
+
+DBjar := DynamoDBLocal.jar
+DBjar_exists := $(shell find . -name $(DBjar))
+DBproc := $(shell lsof -t -i :8000)
+
+db-start:
+	java -Djava.library.path=./DynamoDBLocal_lib -jar test/dynamodb_local_latest/DynamoDBLocal.jar -sharedDb
+
+db-close:
+	kill -9 $(DBproc)
+
+db-create-table:
+	aws dynamodb create-table --cli-input-json file://test/link.json --endpoint-url http://localhost:8000
