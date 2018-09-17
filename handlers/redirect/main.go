@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/toshi0607/url-shortner-lambda-go/handlers/db"
+	"github.com/toshi0607/url-shortner-lambda-go/db"
 )
 
 type Link struct {

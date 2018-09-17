@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/pkg/errors"
 	"github.com/teris-io/shortid"
-	"github.com/toshi0607/url-shortner-lambda-go/handlers/db"
+	"github.com/toshi0607/url-shortner-lambda-go/db"
 )
 
 type request struct {
