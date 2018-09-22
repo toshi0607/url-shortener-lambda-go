@@ -9,11 +9,6 @@ import (
 	"github.com/toshi0607/url-shortner-lambda-go/db"
 )
 
-type Link struct {
-	ShortURL string `json:"shorten_resource"`
-	LongURL  string `json:"original_url"`
-}
-
 var DynamoDB db.DB
 
 func init() {
