@@ -25,8 +25,8 @@ type DB struct {
 }
 
 type Link struct {
-	ShortURL    string `json:"shorten_resource"`
-	OriginalURL string `json:"original_url"`
+	ShortenResource string `json:"shorten_resource"`
+	OriginalURL     string `json:"original_url"`
 }
 
 func New() DB {
@@ -36,6 +36,7 @@ func New() DB {
 
 	return DB{Instance: dynamodb.New(sess)}
 }
+
 func (d DB) GetItem(i interface{}) (string, error) {
 	item, err := d.Instance.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(LinkTableName),
