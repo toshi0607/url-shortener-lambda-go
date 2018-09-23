@@ -23,6 +23,11 @@ deploy: build
 		--query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue' \
 		--output text
 
+delete:
+	aws cloudformation delete-stack --stack-name url-shortener-lambda-go
+	aws s3 rm s3://url-shortener-lambda-go --recursive
+	aws s3 rb s3://url-shortener-lambda-go
+
 DBjar := DynamoDBLocal.jar
 DBjar_exists := $(shell find . -name $(DBjar))
 DBproc := $(shell lsof -t -i :8000)
