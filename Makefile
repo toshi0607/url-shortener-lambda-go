@@ -9,7 +9,7 @@ build-redirect:
 deploy: build
 	sam package \
 		--template-file template.yml \
-		--s3-bucket url-shortener-lambda-go \
+		--s3-bucket stack-bucket-for-url-shortener-lambda-go \
 		--output-template-file sam.yml
 	sam deploy \
 		--template-file sam.yml \
@@ -25,8 +25,8 @@ deploy: build
 
 delete:
 	aws cloudformation delete-stack --stack-name url-shortener-lambda-go
-	aws s3 rm s3://url-shortener-lambda-go --recursive
-	aws s3 rb s3://url-shortener-lambda-go
+	aws s3 rm s3://stack-bucket-for-url-shortener-lambda-go --recursive
+	aws s3 rb s3://stack-bucket-for-url-shortener-lambda-go
 
 DBjar := DynamoDBLocal.jar
 DBjar_exists := $(shell find . -name $(DBjar))
