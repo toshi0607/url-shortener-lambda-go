@@ -15,11 +15,6 @@ var (
 	Region        = os.Getenv("REGION")
 )
 
-type Database interface {
-	GetItem(interface{}) (string, error)
-	PutItem(interface{}) (interface{}, error)
-}
-
 type DB struct {
 	Instance *dynamodb.DynamoDB
 }
