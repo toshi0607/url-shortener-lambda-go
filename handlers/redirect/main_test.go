@@ -16,7 +16,7 @@ func TestHandler(t *testing.T) {
 	}{
 		{"xKlNKGomg", http.MethodGet, http.StatusPermanentRedirect},
 		{"xKlNKGomg", http.MethodPost, http.StatusBadRequest},
-		{"invalid path", http.MethodGet, http.StatusInternalServerError},
+		{"invalid path", http.MethodGet, http.StatusNotFound},
 	}
 
 	for _, te := range tests {
