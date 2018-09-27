@@ -35,6 +35,12 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			errorResponseBody(err.Error()),
 		), nil
 	}
+	if URL == "" {
+		return response(
+			http.StatusNotFound,
+			"",
+		), nil
+	}
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusPermanentRedirect,

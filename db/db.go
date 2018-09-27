@@ -45,7 +45,7 @@ func (d DB) GetItem(i interface{}) (string, error) {
 		return "", errors.Wrapf(err, "failed to get item")
 	}
 	if item.Item == nil {
-		return "", errors.New("no content")
+		return "", nil
 	}
 
 	link := Link{}
