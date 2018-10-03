@@ -1,3 +1,7 @@
+STACK_NAME := url-shortener-lambda-go
+TEMPLATE_FILE := template.yml
+SAM_FILE := sam.yml
+
 build: build-shorten build-redirect
 .PHONY: build
 
@@ -11,26 +15,26 @@ build-redirect:
 
 deploy: build
 	sam package \
-		--template-file template.yml \
-		--s3-bucket stack-bucket-for-url-shortener-lambda-go \
-		--output-template-file sam.yml
+		--template-file $(TEMPLATE_FILE) \
+		--s3-bucket $(STACK_BUCKET) \
+		--output-template-file $(SAM_FILE)
 	sam deploy \
-		--template-file sam.yml \
-		--stack-name url-shortener-lambda-go \
+		--template-file $(SAM_FILE) \
+		--stack-name $(STACK_NAME) \
 		--capabilities CAPABILITY_IAM \
 		--parameter-overrides \
 			LinkTableName=$(LINK_TABLE)
 	echo API endpoint URL for Prod environment:
 	aws cloudformation describe-stacks \
-		--stack-name url-shortener-lambda-go \
+		--stack-name $(STACK_NAME) \
 		--query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue' \
 		--output text
 .PHONY: deploy
 
 delete:
-	aws cloudformation delete-stack --stack-name url-shortener-lambda-go
-	aws s3 rm s3://stack-bucket-for-url-shortener-lambda-go --recursive
-	aws s3 rb s3://stack-bucket-for-url-shortener-lambda-go
+	aws cloudformation delete-stack --stack-name $(STACK_NAME)
+	aws s3 rm "s3://$(STACK_BUCKET)" --recursive
+	aws s3 rb "s3://$(STACK_BUCKET)"
 .PHONY: delete
 
 test:
