@@ -46,7 +46,7 @@ Resources:
   LinkTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: link
+      TableName: !Ref LinkTableName
       AttributeDefinitions:
         - AttributeName: shorten_resource
           AttributeType: S
