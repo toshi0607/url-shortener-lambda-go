@@ -1,0 +1,41 @@
+@startuml
+
+actor "Client" as br
+
+participant "API Gateway" as apigw
+participant "Lambda①" as lambda1
+participant "Lambda②" as lambda2
+participant "DynamoDB" as db
+
+br -> apigw : send request to create shortened URL
+note left : POST /links
+activate apigw
+apigw -> lambda1 : send request to create shortened URL
+activate lambda1
+lambda1 -> lambda1 : shorten URL
+lambda1 -> db : save shortened URL
+activate db
+db --> lambda1 : ack
+deactivate db
+lambda1 --> apigw : shortened URL
+deactivate lambda1
+apigw --> br : shortened URL
+deactivate apigw
+
+br -> apigw : send request to shortened URL
+note left : GET /links/{shorten_resource}
+activate apigw
+apigw -> lambda2 : create shorten URL request
+activate lambda2
+lambda2 -> db : get original URL
+activate db
+db --> lambda2 : original URL
+deactivate db
+lambda2 --> apigw : original URL
+deactivate lambda2
+apigw --> br : redirect
+deactivate apigw
+
+br -> br : send request to original URL
+
+@enduml
