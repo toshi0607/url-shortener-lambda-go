@@ -18,6 +18,8 @@ And,
 * install [aws-cli](https://github.com/aws/aws-cli)
 * install [aws-sam-cli](https://github.com/awslabs/aws-sam-cli). Docker is also required. Follow the instruction [here](https://github.com/awslabs/aws-sam-cli#installation).
 * install [direnv](https://github.com/direnv/direnv)
+* install [saw](https://github.com/TylerBrock/saw)
+  * you can watch CloudWatch logs on your terminal
 * set environment variables to [.envrc.sample](./.envrc.sample) and remove *.sample*.
   * *LINK_TABLE* is DynamoDB table name where maps of your original URLs and shortend resource are gonna be saved. 
   * *REGION* is where your project is gonna be deployed. 
@@ -32,10 +34,26 @@ $ make deploy
 # Your endpoint is gonna be pirinted.
 
 # You can change url for your own.
-$ curl -X POST https://yyyyyyyyyy.execute-api.[your region].amazonaws.com/Prod/links -d '{"url":"http://toshi0607.com/"'}
+$ curl -X POST https://yyyyyyyyyy.execute-api.[your region].amazonaws.com/Prod/links -d '{"url":"http://toshi0607.com/"}'
 xxxxxxxxx
 
 then you can access https://yyyyyyyyyy.execute-api.[your region].amazonaws.com/Prod/links/xxxxxxxxx and it'll be redirected to the original URL.
+```
+
+### log
+
+Deploy is required before checking behavior.
+
+```
+$ saw groups
+/aws/lambda/url-shortener-lambda-go-Redirect-XXXXXXXXXXXX
+/aws/lambda/url-shortener-lambda-go-Shorten-XXXXXXXXXXXX
+
+$ saw watch /aws/lambda/url-shortener-lambda-go-Redirect-XXXXXXXXXXXX &
+$ saw watch /aws/lambda/url-shortener-lambda-go-Shorten-XXXXXXXXXXXX &
+
+# open another window
+$ curl -X POST https://yyyyyyyyyy.execute-api.[your region].amazonaws.com/Prod/links -d '{"url":"http://toshi0607.com/"}'
 ```
 
 ## Local

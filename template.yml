@@ -23,6 +23,11 @@ Resources:
       Environment:
         Variables:
           LINK_TABLE: !Ref LinkTableName
+  ShortenGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${Shorten}
+      RetentionInDays: 1
 
   Redirect:
     Type: AWS::Serverless::Function
@@ -42,6 +47,11 @@ Resources:
       Environment:
         Variables:
           LINK_TABLE: !Ref LinkTableName
+  RedirectGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${Redirect}
+      RetentionInDays: 1
 
   LinkTable:
     Type: AWS::DynamoDB::Table
